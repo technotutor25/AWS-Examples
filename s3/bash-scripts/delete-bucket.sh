@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Usage: ./delete_bucket.sh <bucket-name>
+
+echo "Deleting S3 bucket and all its contents..."
+if [ -z "$1" ]; then
+    echo "Usage: $0 <bucket-name>"
+    exit 1
+fi
+
+BUCKET_NAME="$1"
+
+# Delete all objects (including versions) from the bucket
+aws s3 rm "s3://$BUCKET_NAME" --recursive
+
+# Delete the bucket
+aws s3api delete-bucket --bucket "$BUCKET_NAME"
+
+echo "Bucket '$BUCKET_NAME' deleted."
